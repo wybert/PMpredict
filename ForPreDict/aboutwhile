@@ -1,0 +1,13 @@
+# -*- coding: utf-8 -*-
+j=0
+i=0
+end=10
+
+while i <= end:
+    print j
+    for item in range(end):      
+        print j
+ 
+    j += 1
+    i +=1
+      
