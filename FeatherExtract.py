@@ -32,18 +32,18 @@ class PmDataSet():
 
   #--------------------weather---------------------------
      
-        temperatureDelta = []
-        wind_power=[]
-        temperatuer_high = []
-        temperature_low = []
+        # temperatureDelta = []
+        # wind_power=[]
+        # temperatuer_high = []
+        # temperature_low = []
         
         try:
             for item in weather_data:
     #            print item
-                temp = item[1] - item[2]
-                temperatuer_high += [item[1]]
-                temperature_low += [item[2]]
-                temperatureDelta += [temp]
+                # temp = item[1] - item[2]
+                # temperatuer_high += [item[1]]
+                # temperature_low += [item[2]]
+                # temperatureDelta += [temp]
     #            print item[5]
     
                 for i in range(len(item[5])):
@@ -58,7 +58,7 @@ class PmDataSet():
                     if item[5][4]:
                         item[5][4] = 3
                 item[5] = np.max(item[5])
-                wind_power += [item[5]]
+                # wind_power += [item[5]]
         except:
             pass
     

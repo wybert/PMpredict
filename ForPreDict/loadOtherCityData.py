@@ -244,22 +244,70 @@ def loadXM_KZ_NUM():
 
 def normlizeWeiBo_num(weibo_num,populatiom):
 
-	return weibo_num/populatiom
+    return weibo_num/populatiom
+def process_XM_wether_data2(XM_Weather):
 
+    for item in XM_Weather:
+		item[4] = item[4][1]
 
+    try:
+        for item in XM_Weather:
 
+            for i in range(len(item[5])):
+                if item[5][0]:
+                    item[5][0] = 3
+                if item[5][1]:
+                    item[5][1] = 5
+                if item[5][2]:
+                    item[5][2] = 4
+               
+            item[5] = np.max(item[5])
+#            wind_power += [item[5]]
+    except:
+        pass
 
+    weather_Feture=[]
+    for item in XM_Weather:
+#        print item[5]
+        weather_Feture+=[ [item[0]]+[item[1]]+[item[2]] +[item[1]-item[2]]+item[3]+[item[4]]+[item[5]]   ]
+    return weather_Feture
+    
+def process_SH_weather_data2(SH_Weather):
+
+    for item in SH_Weather:
+        item[4] = item[4][3]
+
+    try:
+        for item in SH_Weather:
+
+            for i in range(len(item[5])):
+                if item[5][0]:
+                    item[5][0] = 3
+                if item[5][1]:
+                    item[5][1] = 5
+                if item[5][2]:
+                    item[5][2] = 4
+               
+            item[5] = np.max(item[5])
+#            wind_power += [item[5]]
+    except:
+        pass
+
+    weather_Feture=[]
+    for item in SH_Weather:
+#        print item[5]
+        weather_Feture+=[ [item[0]]+[item[1]]+[item[2]] +[item[1]-item[2]]+item[3]+[item[4]]+[item[5]]   ]
+    return weather_Feture	     
 
 # uint wan
-xiamen_pop=190.92
-beijing_pop=1297.46
-shanghai_pop=1426.93
-
-
-
-XM_KZ_NUM,day_that_we_donot_have = loadXM_KZ_NUM()
-XM_KZ_NUM = np.array(XM_KZ_NUM)
-XM_KZ_NUM[:,1] = XM_KZ_NUM[:,1]/xiamen_pop
+#xiamen_pop=190.92
+#beijing_pop=1297.46
+#shanghai_pop=1426.93
+#
+#
+#XM_KZ_NUM,day_that_we_donot_have = loadXM_KZ_NUM()
+#XM_KZ_NUM = np.array(XM_KZ_NUM)
+#XM_KZ_NUM[:,1] = XM_KZ_NUM[:,1]/xiamen_pop
 
 
 #---------------------------------------------------------
@@ -274,20 +322,27 @@ XM_KZ_NUM[:,1] = XM_KZ_NUM[:,1]/xiamen_pop
 
 
 #XM_Weather = process_loadedFile('xiamenweather.csv')
+#XM_Weather = process_XM_wether_data2(XM_Weather)
+
+
+SH_Weather = process_loadedFile('shanghaiweather.csv')
+SH_Weather = process_SH_weather_data2(SH_Weather)
+
+
+
+
+#XMKQWR_yuyiResult = loadYYFILE('XMKQWR_yuyiResult.csv')
+
+
 #
-#SH_Weather = process_loadedFile('shanghaiweather.csv')
-
-
-XMKQWR_yuyiResult = loadYYFILE('XMKQWR_yuyiResult.csv')
-
-XMKQWR_yuyiResult =np.array(XMKQWR_yuyiResult)
-XMKQWR_yuyiResult[:,1:]=XMKQWR_yuyiResult[:,1:]/xiamen_pop
-
-
-SHKQWR_yuyiResult = loadYYFILE('SHKQWR_yuyiResult.csv')
-
-SHKQWR_yuyiResult = np.array(SHKQWR_yuyiResult)
-SHKQWR_yuyiResult[:,1:] =SHKQWR_yuyiResult[:,1:]/shanghai_pop
+#XMKQWR_yuyiResult =np.array(XMKQWR_yuyiResult)
+#XMKQWR_yuyiResult[:,1:]=XMKQWR_yuyiResult[:,1:]/xiamen_pop
+#
+#
+#SHKQWR_yuyiResult = loadYYFILE('SHKQWR_yuyiResult.csv')
+#
+#SHKQWR_yuyiResult = np.array(SHKQWR_yuyiResult)
+#SHKQWR_yuyiResult[:,1:] =SHKQWR_yuyiResult[:,1:]/shanghai_pop
 
 
 ###
