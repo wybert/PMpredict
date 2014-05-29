@@ -620,10 +620,6 @@ def process_weather_data2(weather_data):
 
 
 
-
-
-
-
     
 
 ############ excel fuction######################################################  
@@ -633,64 +629,43 @@ def process_weather_data2(weather_data):
 
 if __name__ == '__main__':
 
-#    weibo_num,day_donot_have=load_weibo_num_from_database()
-#    beijing_pop=1297.46
+
+    beijing_pop=1297.46
     
     weather_data=process_loadedFile()
     BJ_weather_data=process_weather_data2(weather_data)
 
-#    #index1=load_index_of_day_mean()  
-#    Pm2_5in,dayLoss_Pm2_5in = getPm2_5inData()
-#    Pm2_5in = np.array(Pm2_5in)[:,2:]
-#    weibo_yuyi_result=load_weibo_yuyi_result()    
-#    weibo_yuyi_result = np.array(weibo_yuyi_result)
-#    weibo_yuyi_result[:,1:] = weibo_yuyi_result[:,1:]/beijing_pop
-#    
-#    
-#    index2=load_index2()    
-#    kouzhao_num,day_that_we_donot_have = load_kouzhao_num()
-#    
-#    
-#    weibo_Ration,days_that_we_donot_have=load_weibo_ration()
-#    
-#    WM_num,WM_day_loss = loadWM_num()
-#    
-#
-#
-#    dateThatDonotUse=set()
-#    
-#    dateThatDonotUse.add(datetime.date(2013,1,12))
-#    dateThatDonotUse.add(datetime.date(2013,1,13))
-#    dateThatDonotUse.add(datetime.date(2013,1,14)) #确实在说空气污染很严重，确实空气污染很严重，官方指数不准
-#    dateThatDonotUse.add(datetime.date(2013,1,15)) #确实在说空气污染很严重，（雪）确实空气污染很严重（爆表），官方指数不准
-#    dateThatDonotUse.add(datetime.date(2013,1,29))
-#    dateThatDonotUse.add(datetime.date(2013,1,30)) #确实在说空气污染很严重，确实空气污染很严重，官方指数不准
-#    dateThatDonotUse.add(datetime.date(2013,1,31)) #在说空气污染，不过也有很多是评头论足
-#    dateThatDonotUse.add(datetime.date(2013,2,24)) #遮天元宵节，氮污染还是蛮严重的
-#    dateThatDonotUse.add(datetime.date(2013,2,28)) #确实在说空气污染很严重，确实空气污染很严重（爆表），官方指数不准
-#
-#
-#
-#
-#    day_loss = day_that_we_donot_have | days_that_we_donot_have | dateThatDonotUse | WM_day_loss
-##    day_loss = day_that_we_donot_have | days_that_we_donot_have 
-#
-##    day_loss =  days_that_we_donot_have | dayLoss_Pm2_5in
-#
-#    week_num=getweekNUm()
-#    
+
+    BJ_weibo_yuyi_result=load_weibo_yuyi_result()    
+    BJ_weibo_yuyi_result = np.array(BJ_weibo_yuyi_result)
+    BJ_weibo_yuyi_result[:,1:] = BJ_weibo_yuyi_result[:,1:]/beijing_pop
+ 
+    BJ_Index=load_index2()    
+    
+    BJ_kouzhao_num,BJ_kouzhao_ZWRO_Days = load_kouzhao_num()
+    
+
+    dateThatDonotUse=set()
+    
+    dateThatDonotUse.add(datetime.date(2013,1,12))
+    dateThatDonotUse.add(datetime.date(2013,1,13))
+    dateThatDonotUse.add(datetime.date(2013,1,14)) #确实在说空气污染很严重，确实空气污染很严重，官方指数不准
+    dateThatDonotUse.add(datetime.date(2013,1,15)) #确实在说空气污染很严重，（雪）确实空气污染很严重（爆表），官方指数不准
+    dateThatDonotUse.add(datetime.date(2013,1,29))
+    dateThatDonotUse.add(datetime.date(2013,1,30)) #确实在说空气污染很严重，确实空气污染很严重，官方指数不准
+    dateThatDonotUse.add(datetime.date(2013,1,31)) #在说空气污染，不过也有很多是评头论足
+    dateThatDonotUse.add(datetime.date(2013,2,24)) #遮天元宵节，氮污染还是蛮严重的
+    dateThatDonotUse.add(datetime.date(2013,2,28)) #确实在说空气污染很严重，确实空气污染很严重（爆表），官方指数不准
 
 
 
+    day_loss =  dateThatDonotUse
+
+    week_num=getweekNUm()
+    
 
 
 
-
-
-#
-#index_of_day_mean=np.array(index1)
-#target=index_of_day_mean[:,1:]
-#target=list(target)
 
 
 
