@@ -30,11 +30,13 @@ from sklearn.metrics import mean_squared_error
 
 
 
-dataSet = np.random.permutation(dataSet) 
+dataSet = np.random.permutation(BJ_DataSet) 
+
 myData,myTarget=dataSet[:,1:-1],dataSet[:,-1]
-selectedFetureName=selectedFetureName[1:-1]
+
+selectedFetureName=SELECTED_FETURE_NAME[1:-1]
 date = dataSet[:,0]
-rat = 0.7
+rat = 0.8
 ratio = int(len(myData)*rat)
 
 X_train, y_train = myData[:ratio], myTarget[:ratio]
@@ -46,15 +48,23 @@ X_test, y_test = myData[ratio:], myTarget[ratio:]
 
 ###############################################################################
 # Fit regression model
-params = {'n_estimators': 500, 'max_depth': 2, 'min_samples_split': 2,
-          'subsample': 0.5,'min_samples_leaf': 5,
-          'learning_rate': 0.05, 'loss': 'ls'}
+params = {'n_estimators': 400, 'max_depth': 4, 'min_samples_split': 2,
+          'subsample': 0.5,'min_samples_leaf': 2,
+          'learning_rate': 0.01, 'loss': 'ls'}
           
           
           
 clf = ensemble.GradientBoostingRegressor(**params)
 
+
 clf.fit(X_train, y_train)
+y_predict = clf.predict(X_test)
+error = y_predict-y_test
+
+pl.scatter(date[ratio:],error)
+pl.show()
+
+
 print clf.score(X_test, y_test)
 mse = mean_squared_error(y_test, clf.predict(X_test))
 print("MSE: %.4f" % mse)

@@ -9,25 +9,25 @@ import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
 from sklearn.ensemble import GradientBoostingRegressor
-#import pylab as plt
-#import datetime
-#from sklearn.decomposition import PCA
-#from sklearn.lda import LDA
+import pylab as plt
+import datetime
+from sklearn.decomposition import PCA
+from sklearn.lda import LDA
 
 
-#def my_Decomposing(X,y,n):
-#
-##    X = iris.data
-##    y = iris.target
-##    target_names = iris.target_names
-#    
-#    
-#    pca = PCA(n_components=n)
-#    X_r = pca.fit(X).transform(X)
-##    lda = LDA(n_components=n)
-##    X_r2 = lda.fit(X, y).transform(X)    
-#    return X_r
-#    
+def my_Decomposing(X,y,n):
+
+#    X = iris.data
+#    y = iris.target
+#    target_names = iris.target_names
+    
+    
+    pca = PCA(n_components=n)
+    X_r = pca.fit(X).transform(X)
+#    lda = LDA(n_components=n)
+#    X_r2 = lda.fit(X, y).transform(X)    
+    return X_r
+    
 
 
 
@@ -81,12 +81,12 @@ def testTheModel(data,target):
 
 
 
-dataSet = np.random.permutation(dataSet) 
+dataSet = np.random.permutation(BJ_DataSet) 
 myData,myTarget=dataSet[:,1:-1],dataSet[:,-1]      
 
-#n=15
-#deX1 = my_Decomposing(myData,myTarget,n)
-#testTheModel(deX1,myTarget)
+n=12
+deX1 = my_Decomposing(myData,myTarget,n)
+testTheModel(deX1,myTarget)
     
     
 testTheModel(myData,myTarget)   

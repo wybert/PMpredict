@@ -97,12 +97,14 @@ def featureSlect(mergered_data):
 
 #    fetrue_select_num = [0,1,2,4,5,6,7,8,9,13,14,15,17,18,19,20,21,24]
     fetrue_select_num = range(len(item_name))
-    selectedFetureName = item_name[fetrue_select_num]
+    
+    global SELECTED_FETURE_NAME
+    SELECTED_FETURE_NAME = item_name[fetrue_select_num]
     
     print "selected feture set:"
     print "##############################################"
 
-    for i,item in enumerate(selectedFetureName) :
+    for i,item in enumerate(SELECTED_FETURE_NAME) :
         print i,item
 
     print "##############################################"
@@ -187,6 +189,9 @@ if __name__ == '__main__':
     xiamen_pop=190.92
     XM_DataSet = loadDataSet(XM_Weather,XMKQWR_yuyiResult,XM_KZ_NUM,XM_Index,week_num,predict_dayloss,xiamen_pop)
     
+    shanghai_pop=1426.93
+    
+    SH_DataSet = loadDataSet(SH_Weather,SHKQWR_yuyiResult,SH_KZ_NUM,SH_Idex,week_num,predict_dayloss,shanghai_pop)
 
 
 
