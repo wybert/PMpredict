@@ -630,20 +630,14 @@ def process_weather_data2(weather_data):
 if __name__ == '__main__':
 
 
-    beijing_pop=1297.46
+    
     
     weather_data=process_loadedFile()
     BJ_weather_data=process_weather_data2(weather_data)
-
-
     BJ_weibo_yuyi_result=load_weibo_yuyi_result()    
-    BJ_weibo_yuyi_result = np.array(BJ_weibo_yuyi_result)
-    BJ_weibo_yuyi_result[:,1:] = BJ_weibo_yuyi_result[:,1:]/beijing_pop
- 
-    BJ_Index=load_index2()    
-    
+
     BJ_kouzhao_num,BJ_kouzhao_ZWRO_Days = load_kouzhao_num()
-    
+    BJ_Index=np.array(load_index2())   
 
     dateThatDonotUse=set()
     

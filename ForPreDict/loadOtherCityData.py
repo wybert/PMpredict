@@ -163,6 +163,46 @@ def sqlExec(sql_Query):
         cursor.close()  
         cnn.close()  
     return fetched
+
+def smoothSHDataTime(data):
+
+    startTime=datetime.date(2014,1,1)
+    endTime=datetime.date(2014,3,31)
+    aDay=datetime.timedelta(days=1)
+
+    year2014=set()
+
+    returnData = []
+    while startTime <= endTime:
+        for item in data:
+            if item[0] ==  startTime:
+#                print item[0]
+            
+                returnData +=[item]
+                
+                test= item[0]
+#                print test
+                break
+        try:
+            if test != startTime:
+                
+                returnData += [(startTime,0) ]
+                
+#                print '^^'
+        except:
+            returnData += [(startTime,0) ]
+        year2014.add(startTime) 
+        
+        startTime+=aDay
+        
+    weibo_date_set=set()
+    
+    for item in data:
+        weibo_date_set.add(item[0])                
+    day_that_we_donot_have=year2014-weibo_date_set
+    
+   
+    return returnData,day_that_we_donot_have    
 def smoothYearDataTime_weioNum(weiboNum):
 
     startTime=datetime.date(2014,1,1)
@@ -219,7 +259,7 @@ def loadXM_KZ_NUM():
          and text not like '%%%#%%%#%%%'
          and text like '%%%%空气%%%%'
     
-         and loc  like '%%%%上海%%%%'
+         and loc  like '%%%%厦门%%%%'
           and source not like '%%%%时光机%%%'
       #########filter   
       
@@ -240,7 +280,38 @@ def loadXM_KZ_NUM():
 #    print XMKZNUM
     
     return smoothYearDataTime_weioNum(XMKZNUM)
-
+def loadSH_KZ_NUM():
+    SQL_Query='''select createAt,count(createAt) as daycot from
+    (
+    
+        SELECT date(createAt) as createAt from kqwr_kz_sh_2014_nodup  where
+        
+           keyword like  "%%%口罩%%%"
+     and text not like '%%%%室内%%%%'
+         and text not like '%%%%甲醛%%%%'
+         and text not like '%%%%【%%%%】%%%%'
+         and text not like '%%%#%%%#%%%'
+         and text like '%%%%空气%%%%'
+    
+         and loc  like '%%%%上海%%%%'
+          and source not like '%%%%时光机%%%'
+      #########filter   
+      
+         and isRetweet = 0
+     
+          and text not like '%%%%url%%%%'
+         ###23333
+     and text not  like '%%%http%%%%'
+             
+             
+     
+       ) as temp 
+     
+    group by  createAt    
+    '''
+    SHKZNUM=sqlExec(SQL_Query)
+    return smoothSHDataTime(SHKZNUM)
+    
 
 def normlizeWeiBo_num(weibo_num,populatiom):
 
@@ -300,68 +371,57 @@ def process_SH_weather_data2(SH_Weather):
     return weather_Feture	     
 
 # uint wan
-#xiamen_pop=190.92
+#
 #beijing_pop=1297.46
 #shanghai_pop=1426.93
 #
 #
-#XM_KZ_NUM,day_that_we_donot_have = loadXM_KZ_NUM()
-#XM_KZ_NUM = np.array(XM_KZ_NUM)
-#XM_KZ_NUM[:,1] = XM_KZ_NUM[:,1]/xiamen_pop
+
+
+
+XM_KZ_NUM,day_that_we_donot_have = loadXM_KZ_NUM()
+XM_Weather = process_loadedFile('xiamenweather.csv')
+XM_Weather = process_XM_wether_data2(XM_Weather)
+
+XM_Index = loadIndex('xiamen.csv')
+XM_Index,Index_loss = smoothYearDataTime_weioNum(XM_Index)
+XM_Index = np.array(XM_Index)
+
+
+
+#print np.max(XM_Index,axis=0)
+#for item in XM_Index:
+#    print item[0]
+
+
+XMKQWR_yuyiResult = loadYYFILE('XMKQWR_yuyiResult.csv')
+
 
 
 #---------------------------------------------------------
 
-#XM_Index = loadIndex('xiamen.csv')
-#SH_Idex = loadIndex('shanghai.csv')
 
-
-#
-#for item in XM_Index:
-#    print item[0],item[1]
-
-
-#XM_Weather = process_loadedFile('xiamenweather.csv')
-#XM_Weather = process_XM_wether_data2(XM_Weather)
-
+SH_KZ_NUM,day_that_we_donot_have = loadSH_KZ_NUM()
 
 SH_Weather = process_loadedFile('shanghaiweather.csv')
 SH_Weather = process_SH_weather_data2(SH_Weather)
 
 
+SH_Weather,SH_Weather_dayloss = smoothSHDataTime(SH_Weather)
+SH_Weather = np.array(SH_Weather)
+
+SHKQWR_yuyiResult = loadYYFILE('SHKQWR_yuyiResult.csv')
+SHKQWR_yuyiResult,SHKQWR_yuyiResult_dayloss=smoothSHDataTime(SHKQWR_yuyiResult)
+SHKQWR_yuyiResult =np.array(SHKQWR_yuyiResult)
+
+SH_Idex = loadIndex('shanghai.csv')
+
+SH_Idex,sh_idex_loss =smoothSHDataTime(SH_Idex)
+SH_Idex = np.array(SH_Idex)
 
 
-#XMKQWR_yuyiResult = loadYYFILE('XMKQWR_yuyiResult.csv')
-
-
-#
-#XMKQWR_yuyiResult =np.array(XMKQWR_yuyiResult)
-#XMKQWR_yuyiResult[:,1:]=XMKQWR_yuyiResult[:,1:]/xiamen_pop
-#
-#
-#SHKQWR_yuyiResult = loadYYFILE('SHKQWR_yuyiResult.csv')
-#
-#SHKQWR_yuyiResult = np.array(SHKQWR_yuyiResult)
-#SHKQWR_yuyiResult[:,1:] =SHKQWR_yuyiResult[:,1:]/shanghai_pop
-
-
-###
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# ------------------------------------------------------
+predict_dayloss=set()
 
 
 

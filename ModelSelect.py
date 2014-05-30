@@ -10,7 +10,8 @@ Created on Fri Apr 04 21:53:41 2014
 import numpy as np
 import pylab as plt
 
-dataSet = np.random.permutation(dataSet) 
+dataSet = np.random.permutation(BJ_DataSet) 
+
 myData,myTarget=dataSet[:,1:-1],dataSet[:,-1]
 
 

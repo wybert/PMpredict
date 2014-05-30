@@ -15,17 +15,25 @@ def MaxMinNorm(before,newMin,newMax):
     for i in before]
     return after
 
-def normlize_data(mergered_data,week_num):
+def normlize_data(mergered_data,week_num,poplation):
+# cosider poplation
+
+    mergered_data[:,[15,16,17,18]] = mergered_data[:,[15,16,17,18]]/poplation
+
 
 # consider weekdays
     for item in mergered_data:
         for i in range(7):
             if item[0].weekday()==i:
-                item[16]=item[18]/float(week_num[i])
-                item[18]=item[19]/float(week_num[i])
-#                    item[20]=item[20]/float(week_num[i])
-#                    item[21]=item[21]/float(week_num[i])
-#                    item[22]=item[22]/float(week_num[i])
+                item[15]=item[15]/float(week_num[i])
+                item[16]=item[16]/float(week_num[i])
+                item[17]=item[17]/float(week_num[i])
+                item[18]=item[18]/float(week_num[i])
+# gui yi hua   
+    temp= mergered_data[:,[15,16,17,18]] 
+
+    mergered_data[:,[15,16,17,18]] = (temp- np.min(temp,axis=0))/(np.max(temp,axis=0) -np.min(temp,axis=0) )
+
     return mergered_data
     
     
@@ -51,9 +59,9 @@ def merger_data(weather_Feture,weibo_yuyi_result,kouzhao_num,index):
    
 
 
-    index=np.array(index)
     target = index[:,1:]
     dataSet_Write_to_R=np.hstack((data,target))
+    
     return dataSet_Write_to_R
 
 
@@ -163,13 +171,44 @@ def resample_cosider_before_days(resampled_data):
 
 
  
-def loadDataSet(BJ_weather_data,BJ_weibo_yuyi_result,BJ_kouzhao_num,BJ_Index,week_num,day_loss):
-
-    mergered_data = merger_data(BJ_weather_data,BJ_weibo_yuyi_result,BJ_kouzhao_num,BJ_Index)
+def loadDataSet(weather_data,weibo_yuyi_result,kouzhao_num,Index,week_num,day_loss,poplation):
+    
+    mergered_data = merger_data(weather_data,weibo_yuyi_result,kouzhao_num,Index)
     featureSlected_data = featureSlect(mergered_data)
-    normlized_data = normlize_data(featureSlected_data,week_num)
+    normlized_data = normlize_data(featureSlected_data,week_num,poplation)
     resampled_data =  resample(normlized_data,day_loss)
-
     return resampled_data
+    
 
-BJ_DataSet = loadDataSet(BJ_weather_data,BJ_weibo_yuyi_result,BJ_kouzhao_num,BJ_Index,week_num,day_loss)
+if __name__ == '__main__':
+    beijing_pop=1297.46
+    BJ_DataSet = loadDataSet(BJ_weather_data,BJ_weibo_yuyi_result,BJ_kouzhao_num,BJ_Index,week_num,day_loss,beijing_pop)
+
+    xiamen_pop=190.92
+    XM_DataSet = loadDataSet(XM_Weather,XMKQWR_yuyiResult,XM_KZ_NUM,XM_Index,week_num,predict_dayloss,xiamen_pop)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
