@@ -167,7 +167,7 @@ def sqlExec(sql_Query):
 def smoothSHDataTime(data):
 
     startTime=datetime.date(2014,1,1)
-    endTime=datetime.date(2014,3,31)
+    endTime=datetime.date(2014,1,31)
     aDay=datetime.timedelta(days=1)
 
     year2014=set()
@@ -413,6 +413,12 @@ SH_Weather = np.array(SH_Weather)
 SHKQWR_yuyiResult = loadYYFILE('SHKQWR_yuyiResult.csv')
 SHKQWR_yuyiResult,SHKQWR_yuyiResult_dayloss=smoothSHDataTime(SHKQWR_yuyiResult)
 SHKQWR_yuyiResult =np.array(SHKQWR_yuyiResult)
+
+SHKZ_yuyiResult = loadYYFILE('SHKZ_sql_pre_data.csv')
+SHKZ_yuyiResult,SHKZ_yuyiResult_dayloss=smoothSHDataTime(SHKZ_yuyiResult)
+SHKZ_yuyiResult =np.array(SHKZ_yuyiResult)
+
+
 
 SH_Idex = loadIndex('shanghai.csv')
 

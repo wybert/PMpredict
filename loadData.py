@@ -273,11 +273,13 @@ def smoothYearDataTime_weioNum(weiboNum):
                 test= item[0]
 #                print test
                 break
-        if test != startTime:
-            
-            returnData += [(startTime,0) ]
-            
-            print '^^'
+        try:
+            if test != startTime:
+                returnData += [(startTime,0) ]
+                print '^^'
+        except:
+            returnData += [(startTime,0)]
+
         year2013.add(startTime) 
         
         startTime+=aDay
@@ -464,6 +466,50 @@ def load_kouzhao_num():
     
     return smoothYearDataTime_weioNum(kouzhao_num)
 
+def loadYYFILE(filename):
+    XMKQWR=csv.reader(file(filename,'r'))
+    XMKQWR=list(XMKQWR)
+    startTime=datetime.date(2013,1,1)
+    endTime=datetime.date(2013,12,31)
+    aDay=datetime.timedelta(days=1)
+    daylist=[]
+    
+    while startTime <= endTime:
+
+        good,bad,other=0,0,0
+
+#        print 'start:',startTime
+        
+        for item in XMKQWR:
+            
+            temp=item[0].split('-')
+            temp=[string.atoi(i) for i in temp]
+            date=datetime.date(*temp)
+#            print date,'@@'
+#            break
+ 
+            if date == startTime:
+#                print "^^"
+                if item[2] == '1':
+                    bad+=1
+                elif item[2] == '-1':
+                    good+=1
+                elif item[2] == '0':
+                    other +=1
+                else:
+                    print 'wrong'
+
+        daylist += [[startTime]+[good]+[bad]+[other]]
+
+#        print 'ended:',startTime
+        startTime += aDay
+  
+#        print startTime
+    return daylist
+
+
+
+
 # ----------------------WM number ----------------------------------------------
 def loadWM_num():    
     sqL='''
@@ -636,7 +682,15 @@ if __name__ == '__main__':
     BJ_weather_data=process_weather_data2(weather_data)
     BJ_weibo_yuyi_result=load_weibo_yuyi_result()    
 
-    BJ_kouzhao_num,BJ_kouzhao_ZWRO_Days = load_kouzhao_num()
+#    BJ_kouzhao_num,BJ_kouzhao_ZWRO_Days = load_kouzhao_num()
+
+    BJKZ_yuyiResult= loadYYFILE('data/BJKZ_sql_pre_data.csv')
+    
+    BJKZ_yuyiResult,BJKZ_yuyiResult_dayloss=smoothYearDataTime_weioNum(BJKZ_yuyiResult)
+    BJKZ_yuyiResult =np.array(BJKZ_yuyiResult)
+
+
+
     BJ_Index=np.array(load_index2())   
 
     dateThatDonotUse=set()

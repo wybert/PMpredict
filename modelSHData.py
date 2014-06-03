@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri May 30 14:15:37 2014
+Created on Tue Jun 03 16:49:41 2014
 
 @author: zqh
 """
-
 
 import numpy as np
 
@@ -37,15 +36,11 @@ def modelTheData(data,target):
 
 
 #beijing
-#    myMachine = GradientBoostingRegressor(alpha=0.9, init=None, learn_rate=None,
-#             learning_rate=0.05, loss='ls', max_depth=1, max_features=None,
-#             min_samples_leaf=2, min_samples_split=2, n_estimators=300,
-#             random_state=None, subsample=0.5, verbose=0)
-
     myMachine = GradientBoostingRegressor(alpha=0.9, init=None, learn_rate=None,
-             learning_rate=0.05, loss='ls', max_depth=3, max_features=None,
-             min_samples_leaf=2, min_samples_split=2, n_estimators=500,
+             learning_rate=0.05, loss='ls', max_depth=1, max_features=None,
+             min_samples_leaf=2, min_samples_split=2, n_estimators=300,
              random_state=None, subsample=0.5, verbose=0)
+
 #shanghai
 #    myMachine = GradientBoostingRegressor(alpha=0.9, init=None, learn_rate=None,
 #             learning_rate=0.05, loss='ls', max_depth=3, max_features=None,
@@ -66,20 +61,15 @@ def modelTheData(data,target):
 
 
 
-def predictCityPm(myMachine,DataSet):
-#    n=12
-    Data,Target=DataSet[:,1:-1],DataSet[:,-1] 
-    
-#    Data_decomp = my_Decomposing(Data,n)
-    
+def predictCityPm(myMachine,Data,Target):
+
     preDara=myMachine.predict(Data)
     
-    date = DataSet[:,0]
     
 
     plt.figure()
-    plt.plot(range(len(date)),Target,label = 'true')
-    plt.plot(range(len(date)),preDara,label = 'predict')
+    plt.plot(range(len(Target)),Target,label = 'true')
+    plt.plot(range(len(Target)),preDara,label = 'predict')
     plt.legend(loc='upper right')
     plt.title('predict and true value')
     
@@ -88,7 +78,7 @@ def predictCityPm(myMachine,DataSet):
     plt.show()
     
     plt.figure()
-    plt.plot(range(len(date)),preDara-Target)
+    plt.plot(range(len(Target)),preDara-Target)
     plt.title('eroor plot')
     plt.show()
     
@@ -99,49 +89,29 @@ def predictCityPm(myMachine,DataSet):
 
 
 
-dataSet = np.random.permutation(BJ_DataSet) 
-myData,myTarget=dataSet[:,1:-1],dataSet[:,-1]      
+
+dataSet = np.random.permutation(SH_DataSet) 
+
+myData,myTarget=dataSet[:,1:-1],dataSet[:,-1]
+
+date = dataSet[:,0]
+rat = 0.8
+ratio = int(len(myData)*rat)
+
+X_train, y_train = myData[:ratio], myTarget[:ratio]
+X_test, y_test = myData[ratio:], myTarget[ratio:]
+
+
+
 
 #n=12
 #deX1 = my_Decomposing(myData,n)
 #myMachine = modelTheData(deX1,myTarget)
 
-myMachine = modelTheData(myData,myTarget)
+myMachine = modelTheData(X_train,y_train)
 
 
 #XM_preDara = predictCityPm(myMachine,XM_DataSet)
 
 
-SH_preDara = predictCityPm(myMachine,SH_DataSet)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+SH_preDara = predictCityPm(myMachine,X_test,y_test)

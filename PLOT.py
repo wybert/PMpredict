@@ -103,6 +103,7 @@ pos = np.arange(sorted_idx.shape[0]) + .5
 #pl.subplot(1, 2, 2)
 
 pl.barh(pos, feature_importance[sorted_idx], align='center')
+
 pl.yticks(pos, selectedFetureName[sorted_idx],fontproperties=myFonts)
 pl.xlabel('Relative Importance')
 pl.title('Variable Importance')

@@ -18,7 +18,7 @@ def MaxMinNorm(before,newMin,newMax):
 def normlize_data(mergered_data,week_num,poplation):
 # cosider poplation
 
-    mergered_data[:,[15,16,17,18]] = mergered_data[:,[15,16,17,18]]/poplation
+#    mergered_data[:,[15,16,17,18,19,20]] = mergered_data[:,[15,16,17,18,19,20]]/poplation
 
 
 # consider weekdays
@@ -29,10 +29,13 @@ def normlize_data(mergered_data,week_num,poplation):
                 item[16]=item[16]/float(week_num[i])
                 item[17]=item[17]/float(week_num[i])
                 item[18]=item[18]/float(week_num[i])
-# gui yi hua   
-    temp= mergered_data[:,[15,16,17,18]] 
+                item[19]=item[19]/float(week_num[i])
+                item[20]=item[20]/float(week_num[i])
 
-    mergered_data[:,[15,16,17,18]] = (temp- np.min(temp,axis=0))/(np.max(temp,axis=0) -np.min(temp,axis=0) )
+# gui yi hua   
+#    temp= mergered_data[:,[15,16,17,18,19,20]] 
+#
+#    mergered_data[:,[15,16,17,18,19,20]] = (temp- np.min(temp,axis=0))/(np.max(temp,axis=0) -np.min(temp,axis=0) )
 
     return mergered_data
     
@@ -50,6 +53,7 @@ def merger_data(weather_Feture,weibo_yuyi_result,kouzhao_num,index):
     
    #----------------------kouzhao --------------------------------------
     kouzhao_num = np.array(kouzhao_num)
+#    print '^_^',kouzhao_num.shape
     kouzhao_num = kouzhao_num[:,1:]
   
 #    ---------------------------折叠  -------------------------------------
@@ -90,13 +94,13 @@ def featureSlect(mergered_data):
                  u'风向'
                  ,'wind_power']
     weibo_yuyi_item=['good','bad','other']
-    kouzhao_num_item =['kouzhaoWeiboNum']   
+    kouzhao_num_item =['KZ_good','KZ_bad','KZ_other']   
     target_item=['target']
     item_name = wealth_item + weibo_yuyi_item + kouzhao_num_item+  target_item
     item_name = np.array(item_name)
 
-#    fetrue_select_num = [0,1,2,4,5,6,7,8,9,13,14,15,17,18,19,20,21,24]
-    fetrue_select_num = range(len(item_name))
+    fetrue_select_num = [0,1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,21]
+#    fetrue_select_num = range(len(item_name))
     
     global SELECTED_FETURE_NAME
     SELECTED_FETURE_NAME = item_name[fetrue_select_num]
@@ -108,6 +112,8 @@ def featureSlect(mergered_data):
         print i,item
 
     print "##############################################"
+#    print fetrue_select_num
+#    print mergered_data.shape
 
     fetureSelected_dataSet = mergered_data[:,fetrue_select_num]
 
@@ -153,7 +159,8 @@ def resample_cosider_before_days(resampled_data):
 #        dataConsiderTime = np.hstack((resampled_data[1:,:-1],timedeta,resampled_data[1:,-1:]))
 #
 
-    N=1
+    resampled_data=resampled_data[:,1:]
+    N=3
     num_Sample = len(resampled_data)-N+1
     dataSet = []
     for i in range(num_Sample):
@@ -168,6 +175,9 @@ def resample_cosider_before_days(resampled_data):
         
     dataSet = np.array(dataSet)
     
+    date =np.zeros((len(dataSet),1))
+#    print date
+    dataSet = np.hstack((date,dataSet))
 
     return dataSet
 
@@ -176,22 +186,25 @@ def resample_cosider_before_days(resampled_data):
 def loadDataSet(weather_data,weibo_yuyi_result,kouzhao_num,Index,week_num,day_loss,poplation):
     
     mergered_data = merger_data(weather_data,weibo_yuyi_result,kouzhao_num,Index)
-    featureSlected_data = featureSlect(mergered_data)
-    normlized_data = normlize_data(featureSlected_data,week_num,poplation)
-    resampled_data =  resample(normlized_data,day_loss)
-    return resampled_data
+    normlized_data = normlize_data(mergered_data,week_num,poplation)  
+    featureSlected_data = featureSlect(normlized_data) 
+    resampled_data =  resample(featureSlected_data,day_loss)
+    resampled_cosider_before_days = resample_cosider_before_days(resampled_data)
+    
+    
+    return resampled_cosider_before_days
     
 
 if __name__ == '__main__':
     beijing_pop=1297.46
-    BJ_DataSet = loadDataSet(BJ_weather_data,BJ_weibo_yuyi_result,BJ_kouzhao_num,BJ_Index,week_num,day_loss,beijing_pop)
+    BJ_DataSet = loadDataSet(BJ_weather_data,BJ_weibo_yuyi_result,BJKZ_yuyiResult,BJ_Index,week_num,day_loss,beijing_pop)
 
-    xiamen_pop=190.92
-    XM_DataSet = loadDataSet(XM_Weather,XMKQWR_yuyiResult,XM_KZ_NUM,XM_Index,week_num,predict_dayloss,xiamen_pop)
-    
+#    xiamen_pop=190.92
+#    XM_DataSet = loadDataSet(XM_Weather,XMKQWR_yuyiResult,XM_KZ_NUM,XM_Index,week_num,predict_dayloss,xiamen_pop)
+#    
     shanghai_pop=1426.93
     
-    SH_DataSet = loadDataSet(SH_Weather,SHKQWR_yuyiResult,SH_KZ_NUM,SH_Idex,week_num,predict_dayloss,shanghai_pop)
+    SH_DataSet = loadDataSet(SH_Weather,SHKQWR_yuyiResult,SHKZ_yuyiResult,SH_Idex,week_num,predict_dayloss,shanghai_pop)
 
 
 

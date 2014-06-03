@@ -40,9 +40,9 @@ def testTheModel(data,target):
      
     # Set the parameters by cross-validation
     tuned_parameters = [
-                        {'n_estimators': [100,200,300,400], 'learning_rate': [0.1,0.05,0.01],
+                        {'n_estimators': [300,400,500], 'learning_rate': [0.1,0.05],
                          'subsample':[0.5],
-                         'max_depth': [1,2,3,4,5],
+                         'max_depth': [1,2,3],
 #                         'max_features':[10,11],
                          'min_samples_leaf':[10,20,5,2],
 #                        'loss':['ls','lad','huber','quantile'],
@@ -84,9 +84,9 @@ def testTheModel(data,target):
 dataSet = np.random.permutation(BJ_DataSet) 
 myData,myTarget=dataSet[:,1:-1],dataSet[:,-1]      
 
-n=12
-deX1 = my_Decomposing(myData,myTarget,n)
-testTheModel(deX1,myTarget)
+#n=15
+#deX1 = my_Decomposing(myData,myTarget,n)
+#testTheModel(deX1,myTarget)
     
     
 testTheModel(myData,myTarget)   
