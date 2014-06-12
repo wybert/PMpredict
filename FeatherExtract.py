@@ -39,6 +39,32 @@ def normlize_data(mergered_data,week_num,poplation):
 
     return mergered_data
     
+
+
+def transIndex2Levels(index):
+          
+    target_level=np.zeros(index.shape,dtype=int)
+
+    for i in range(len(index)):
+        if index[i][1] <= 100:
+            target_level[i][1] = 1
+
+        elif index[i][1] > 100 and index[i][1] <= 300:
+#            print '#_#'
+            target_level[i][1] = 2
+        elif index[i][1] > 300:
+            target_level[i][1] = 3 
+#    print '######################################'  
+#    for item in target_level:
+#        print item    
+#    print '######################################'    
+#    for item in index:
+#        print item
+#    print '######################################'  
+
+    return target_level
+
+
     
 def merger_data(weather_Feture,weibo_yuyi_result,kouzhao_num,index):
 
@@ -160,6 +186,7 @@ def resample_cosider_before_days(resampled_data):
 #
 
     resampled_data=resampled_data[:,1:]
+#    N=1
     N=3
     num_Sample = len(resampled_data)-N+1
     dataSet = []
@@ -185,7 +212,8 @@ def resample_cosider_before_days(resampled_data):
  
 def loadDataSet(weather_data,weibo_yuyi_result,kouzhao_num,Index,week_num,day_loss,poplation):
     
-    mergered_data = merger_data(weather_data,weibo_yuyi_result,kouzhao_num,Index)
+    target=transIndex2Levels(Index)
+    mergered_data = merger_data(weather_data,weibo_yuyi_result,kouzhao_num,target)
     normlized_data = normlize_data(mergered_data,week_num,poplation)  
     featureSlected_data = featureSlect(normlized_data) 
     resampled_data =  resample(featureSlected_data,day_loss)

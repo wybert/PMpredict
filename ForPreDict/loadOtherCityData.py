@@ -378,24 +378,25 @@ def process_SH_weather_data2(SH_Weather):
 #
 
 
-
-XM_KZ_NUM,day_that_we_donot_have = loadXM_KZ_NUM()
-XM_Weather = process_loadedFile('xiamenweather.csv')
-XM_Weather = process_XM_wether_data2(XM_Weather)
-
-XM_Index = loadIndex('xiamen.csv')
-XM_Index,Index_loss = smoothYearDataTime_weioNum(XM_Index)
-XM_Index = np.array(XM_Index)
-
-
-
-#print np.max(XM_Index,axis=0)
-#for item in XM_Index:
-#    print item[0]
-
-
-XMKQWR_yuyiResult = loadYYFILE('XMKQWR_yuyiResult.csv')
-
+#
+#XM_KZ_NUM,day_that_we_donot_have = loadXM_KZ_NUM()
+#
+#XM_Weather = process_loadedFile('xiamenweather.csv')
+#XM_Weather = process_XM_wether_data2(XM_Weather)
+#
+#XM_Index = loadIndex('xiamen.csv')
+#XM_Index,Index_loss = smoothYearDataTime_weioNum(XM_Index)
+#XM_Index = np.array(XM_Index)
+#
+#
+#
+##print np.max(XM_Index,axis=0)
+##for item in XM_Index:
+##    print item[0]
+#
+#
+#XMKQWR_yuyiResult = loadYYFILE('XMKQWR_yuyiResult.csv')
+#
 
 
 #---------------------------------------------------------

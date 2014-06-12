@@ -9,10 +9,10 @@ import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
 from sklearn.ensemble import GradientBoostingRegressor
-import pylab as plt
-import datetime
+#import pylab as plt
+#import datetime
 from sklearn.decomposition import PCA
-from sklearn.lda import LDA
+#from sklearn.lda import LDA
 
 
 def my_Decomposing(X,y,n):
